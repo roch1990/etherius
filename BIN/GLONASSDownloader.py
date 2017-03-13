@@ -1,13 +1,3 @@
-#-------------------------------------------------------------------------------
-# Name:        GLONASS Ephemeride Stealer(GNS) ;)
-# Purpose:     You can download GLONASS ephemeris from ftp.glonass-iac.ru by
-#              using this small script
-# Author:      Eugene Gildin
-#
-# Created:     31.10.2013
-# Copyright:   (c) Eugene 2013
-# Licence:     <in that place should be my license>
-#-------------------------------------------------------------------------------
 # Modules import
 from ftplib import FTP
 import datetime, os

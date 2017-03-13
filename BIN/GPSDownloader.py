@@ -1,14 +1,3 @@
-#-------------------------------------------------------------------------------
-# Name:        Gps Ephemeris Stealer
-# Purpose:
-#
-# Author:      Eugene Gildin
-#
-# Created:     01.11.2013
-# Copyright:   (c) User 2013
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
-
 # Modules import
 from ftplib import FTP
 import os, zipfile
