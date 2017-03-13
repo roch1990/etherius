@@ -1,0 +1,803 @@
+
+! Use Book-Version or Bernese Version?
+! -----------------------------------
+BOOK_BERNESE 1  "1"
+  ## widget = lineedit
+
+! Environment Variables
+! ---------------------
+ENVIRONMENT 1  "CM" "E:\Celestial Mechanics"
+  ## widget = initmenu; pointer = ENVIR_LIST
+
+! General Constants
+! -----------------
+CONST 1  "${CM}\GEN\CONST"
+  ## widget = selwin; path = PTH_GEN; ext = NO_EXT; maxfiles = 1
+  # CONST
+
+! Local Geodetic Datum
+! --------------------
+DATUM 1  "${CM}\GEN\DATUM"
+  ## widget = selwin; path = PTH_GEN; ext = NO_EXT; maxfiles = 1
+  # DATUM
+
+! A Priori Coordinates for Satellite Observations
+! -----------------------------------------------
+COORD 1  "${CM}\ORBDET\STA\OBS_SAT.CRD"
+  ## widget = selwin; path = PTH_ORBDET_STA; ext = EXT_CRD; maxfiles = 1
+  # OBS_SAT
+
+! General Pole File
+! -----------------
+POLE 1  "${CM}\GEN\BULLET_A.ERP"
+  ## widget = selwin; path = PTH_GEN; ext = EXT_ERP; maxfiles = 1
+  # BULLET_A
+
+! File with Earth gravity potential coefficients
+!----------------------------------------------
+POTCOE 1  "${CM}\GEN\JGM3"
+  ## widget = selwin; path = PTH_GEN; ext = NO_EXT; maxfiles = 1
+  # JGM3
+
+! Ocean Tides File
+! ----------------
+OTIDES 1  "${CM}\GEN\OT_CSRC.TID"
+  ## widget = selwin; path = PTH_GEN; ext = NO_EXT; maxfiles = 1
+  # OT_CSRC.TID
+
+! JPL-Ephemerides
+! ---------------
+JPLEPH 1  "${CM}\GEN\DE200.EPH"
+  ## widget = selwin; path = PTH_GEN; ext = NO_EXT; maxfiles = 1
+  # DE200.EPH
+
+! File with elements
+! ------------------
+ELEAPR 1  "${CM}\ORBDET\ORB\97049B00.ELE"
+  ## widget = selwin; path = PTH_ORBDET_ORB; ext = EXT_ELE; maxfiles = 1
+  ## emptyallowed = true
+  # 97049B00
+
+! File with observations
+! ----------------------
+OBSFIL 1  "${CM}\ORBDET\OBS\97049B00.OBS"
+  ## widget = selwin; path = PTH_ORBDET_OBS; ext = EXT_OBS; maxfiles = 1
+  ## emptyallowed = true
+  # 97049B00
+
+! Output (Log) File
+! -----------------
+SYSOUT 1  "${CM}\SATORB\OUT\SATORB.OUT"
+  ## widget = lineedit; path = PTH_SATORB_OUT; ext = EXT_OUT; maxfiles = -1
+  # SATORB
+
+! Files with Residuals
+! -------------------
+RESIDU 1  "${CM}\SATORB\OUT\SATORB.RES"
+  ## activeif = EPHORB /= EPHEMERIS; widget = lineedit
+  ## path = PTH_SATORB_OUT; ext = EXT_RES; maxfiles = -1
+  # SATORB
+
+RESPPD 1  "${CM}\SATORB\OUT\SATPPD.RES"
+  ## widget = lineedit; path = PTH_SATORB_OUT; ext = EXT_RES; maxfiles = -1
+  # SATPPD
+
+! Tabular Output File
+! -------------------
+TABOUT 0
+  ## widget = lineedit; path = PTH_SATORB_OUT; ext = EXT_TAB; maxfiles = -1
+  ## activeif = CREATE_TABOUT = 1
+  # TEST
+
+! Standard Orbit File
+! -------------------
+STDORB 0
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO AND CREATE_STD = 1
+  ## widget = lineedit; path = PTH_SATORB_ORB; ext = EXT_STD; maxfiles = -1
+  # CH03208_C2
+
+! Output Ephemeris File (CNES Format)
+! -----------------------------------
+EPHFILE 1  "${CM}\LEOKIN\ORB\CH03208_C2.PRE"
+  ## widget = lineedit; path = PTH_LEOKIN_ORB; ext = EXT_PRE; maxfiles = -1
+  ## activeif = CREATE_EPHFILE = 1
+  # CH03208_C2
+
+!
+! Ephemerides or Orbit Determination
+EPHORB 1  "ORBIT_DET(PSEUDO_OBS)"
+  ## widget = combobox; editable = false
+  ## cards = EPHEMERIS ORBIT_DET(PSEUDO_OBS) ORBIT_DET(OBS)
+
+! Auxiliary File with Binary Information
+! --------------------------------------
+TABAUX 1  "${CM}\SATORB\OUT\TABAUX"
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS); widget = lineedit
+  ## path = PTH_SATORB_OUT; ext = NO_EXT; maxfiles = 1
+  # TABAUX
+
+! Error Message File
+! ------------------
+SYSERR 0
+  ## widget = lineedit; path = PTH_SATORB_OUT; ext = EXT_ERR; maxfiles = -1
+  # 
+
+! Panel with Orbital Elements
+! ***************************
+YEAR 1  "2000"
+  ## widget = lineedit
+
+MONTH 1  "01"
+  ## widget = lineedit
+
+DAY 1  "01.0000"
+  ## widget = lineedit
+
+INT_LENGTH 1  "1000."
+  ## widget = lineedit; check_min = 0.0
+
+USE_REV 1  "1"
+  ## widget = checkbox
+
+LONG_NODE 1  "1"
+  ## widget = checkbox
+
+SEMI_MAJOR 1  "8000.000"
+  ## activeif = USE_REV = 0; widget = lineedit
+
+REV_PER 1  "1.000000000"
+  ## activeif = USE_REV = 1; widget = lineedit
+
+ECCENTRICITY 1  "0.001"
+  ## widget = lineedit; check_min = 0.0; check_max = 0.999
+
+INCLINATION 1  "0."
+  ## widget = lineedit; widget = lineedit; check_min = 0.0; check_max = 180.
+
+NODE 1  "62."
+  ## widget = lineedit
+
+PERIHELION 1  "0."
+  ## widget = lineedit
+
+PERIHELION_PASSING 1  "0."
+  ## widget = lineedit
+
+! Panel with more options for Ephemeris Production
+! ------------------------------------------------
+!
+! Trafo Earth-fixed -- Inertial Correct or Approximate
+EOP_PA 1  "APPROX"
+  ## widget = combobox; editable = false; cards = CORRECT APPROX
+
+TAB_INT 1  "1."
+  ## widget = lineedit; check_min = 0.1
+
+SAMP_TAB 1  "1440"
+  ## widget = lineedit; check_min = 1; check_type = integer
+
+NUMBER_REV 1  "1."
+  ## widget = lineedit
+
+! Tabular Output File
+! -------------------
+TABPOS 1  "${CM}\SATORB\ORB\TEST.TAB"
+  ## widget = lineedit; path = PTH_SATORB_ORB; ext = EXT_TAB; maxfiles = -1
+  # TEST
+
+! Tabular Output File
+! -------------------
+ELEFIL 1  "${CM}\SATORB\ORB\TEST.ELE"
+  ## widget = lineedit; path = PTH_SATORB_ORB; ext = EXT_ELE; maxfiles = -1
+  # TEST
+
+! Satellite type
+! --------------
+SATTYP 1  "GPS/GLONASS"
+  ## widget = combobox; editable = false; cards = GPS/GLONASS LEO
+
+! Satellite Information File
+! --------------------------
+SATELL 1  "${CM}\GEN\SATELLIT"
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS); widget = selwin
+  ## path = PTH_GEN; ext = NO_EXT; maxfiles = 1
+  # SATELLIT
+
+! Options of Orbit Determination
+! ------------------------------
+TABSP3 1  "SP3"
+  ## widget = combobox; editable = false; cards = TAB SP3 PPD
+
+RMS_APRIORI 1  "0.1"
+  ## widget = lineedit
+
+SATNUM 0
+  ## activeif = SATTYP /= LEO; widget = lineedit
+  # 
+
+! Options for Processing Positions and Position Differences
+! ---------------------------------------------------------
+RMS_RATIO_1 1  "1.0"
+  ## widget = lineedit
+
+RMS_RATIO_2 1  "0.01"
+  ## widget = lineedit
+
+RMS_MIN_POS 1  "1.0"
+  ## widget = lineedit
+
+RMS_MIN_PPD 1  "0.02"
+  ## widget = lineedit
+
+! Special Informations for LEOs
+! -----------------------------
+MISCFIL 0
+  ## widget = selwin; path = PTH_SATORB_ORB; ext = EXT_ATT; maxfiles = 1
+  ## emptyallowed = true
+  # 
+
+MISCFIL_EXT_COL_2 1  "ACC"
+  ## widget = initmenu; pointer = EXT_ACC
+
+MISCFIL_PTH_COL_2 1  "${CM}\SATORB\ORB"
+  ## widget = initmenu; pointer = PTH_SATORB_ORB
+
+MISCFIL_EXT_COL_3 1  "MAN"
+  ## widget = initmenu; pointer = EXT_MAN
+
+MISCFIL_PTH_COL_3 1  "${CM}\SATORB\ORB"
+  ## widget = initmenu; pointer = PTH_SATORB_ORB
+
+! Input Tabular Files
+! -------------------
+TABFIL 0
+  ## widget = selwin; path = PTH_SATORB_ORB; ext = EXT_TAB; maxfiles = 999
+  ## activeif = TABSP3 = TAB and SATTYP = GPS/GLONASS
+  # CI02076
+
+TABFIL_EXT_COL_2 1  "ERP"
+
+TABFIL_PTH_COL_2 1  "${CM}\SATORB\OUT"
+  ## widget = initmenu; pointer = PTH_SATORB_OUT
+
+TABFILL 0
+  ## widget = selwin; path = PTH_LEOKIN_ORB; ext = EXT_TAB; maxfiles = 999
+  ## activeif = TABSP3 = TAB and SATTYP = LEO
+  # CH01140_C1
+
+TABFILL_EXT_COL_2 1  "ERP"
+
+TABFILL_PTH_COL_2 1  "${CM}\LEOKIN\OUT"
+  ## widget = initmenu; pointer = PTH_LEOKIN_OUT
+
+! Input Tabular Files
+! -------------------
+PPDFIL 0
+  ## widget = selwin; path = PTH_LEOKIN_OUT; ext = EXT_PPD; maxfiles = 999
+  ## activeif = SATTYP = LEO and TABSP3 = PPD
+  # CH03208_C1
+
+!
+! Create Standard Orbit and other output orbits
+! ---------------------------------------------
+CREATE_STD 1  "1"
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO
+  ## widget = checkbox
+
+CREATE_TABOUT 1  "0"
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO
+  ## widget = checkbox
+
+CREATE_EPHFILE 1  "1"
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO
+  ## widget = checkbox
+
+SPAC_SP3_TAB 1  "10."
+  ## widget = lineedit
+
+! Standard Orbit Output
+! ---------------------
+STD_ORDER 1  "8"
+  ## widget = spinbox; range = 2 14 1
+
+STD_ORDER_IEO3 1  "8"
+  ## widget = spinbox; range = 2 14 1
+
+STD_LENGTH 1  "120."
+  ## widget = lineedit
+
+STD_LENGTH_IEO3 1  "3600."
+  ## widget = lineedit
+
+STD_LENGTH_TOT 0
+  ## widget = lineedit
+  # 
+
+! Input Precise Files
+! -------------------
+PREFIL 1  "${CM}\LEOKIN\ORB\STA17212.PRE"
+  ## widget = selwin; path = PTH_LEOKIN_ORB; ext = EXT_PRE; maxfiles = 999
+  ## activeif = TABSP3 = SP3
+  # STA17212
+
+PREFIL_EXT_COL_2 1  "ERP"
+
+PREFIL_PTH_COL_2 1  "${CM}\SATORB\OUT"
+  ## widget = initmenu; pointer = PTH_SATORB_OUT
+
+! Specification of A Priori Forcefield
+! ************************************
+UPPER_N 1  "8"
+  ## widget = spinbox; range = 0 150 1
+
+UPPER_M 1  "8"
+  ## widget = spinbox; range = 0 150 1
+
+SUNGRAV 1  "1"
+  ## widget = checkbox
+
+MOONGRAV 1  "1"
+  ## widget = checkbox
+
+GENREL 1  "1"
+  ## widget = checkbox
+
+TIDES 1  "1"
+  ## widget = checkbox
+
+! Non-gravity force field
+! -----------------------
+RPR0 1  "1"
+  ## activeif = SATTYP = LEO OR EPHORB /= ORBIT_DET(PSEUDO_OBS)
+  ## widget = checkbox
+
+ROCKIV 1  "1"
+  ## activeif = SATTYP = GPS/GLONASS AND EPHORB = ORBIT_DET(PSEUDO_OBS)
+  ## widget = checkbox
+
+AIRDRAG 1  "0"
+  ## activeif = SATTYP = LEO OR EPHORB = EPHEMERIS OR EPHORB = ORBIT_DET(OBS)
+  ## widget = checkbox
+
+ALBEDO 1  "0"
+  ## activeif = SATTYP = LEO OR EPHORB = EPHEMERIS; widget = checkbox
+
+! NON-GRAVITY FORCES FROM EXTERNAL FILE
+! -------------------------------------
+NGR_ACC 1  "0"
+  ## widget = checkbox
+
+OFF_ACC 1  "0"
+  ## widget = checkbox
+
+SCL_ACC 1  "0"
+  ## widget = checkbox
+
+DRAG_AM_RATIO 1  "0.02"
+  ## activeif = AIRDRAG = 1; widget = lineedit
+
+DRAG_COEFF_C 1  "2.0"
+  ## activeif = AIRDRAG = 1; widget = lineedit
+
+DRAG_SOLAR 1  "150."
+  ## activeif = AIRDRAG = 1; widget = lineedit
+
+DRAG_MAG 1  "4."
+  ## activeif = AIRDRAG = 1; widget = lineedit
+
+RPR_AM_RATIO 1  "0.02"
+  ## activeif = RPR0 = 1; widget = lineedit
+
+RPR_COEFF_C 1  "2.0"
+  ## activeif = RPR0 = 1; widget = lineedit
+
+! Integration - Equation of Motion
+! --------------------------------
+INTEGRATION_ORDER 1  "12"
+  ## widget = spinbox; range = 2 14 1
+
+INITIAL_STEP 1  "1880."
+  ## widget = lineedit
+
+ITER_STEP 1  "1"
+  ## widget = spinbox; range = 0 5 1
+
+! Maximum Error per Velocity Component and per Step
+! -------------------------------------------------
+MAXVEL 1  "1.d-10"
+  ## widget = lineedit
+
+! Integration - Variational Equtions
+! ----------------------------------
+INTEGRATION_ORDER_VAR 1  "30"
+  ## widget = spinbox; range = 2 30 1
+
+STEP_VAR 1  "6."
+  ## widget = lineedit
+
+NUM_ITER_ODET 1  "6"
+  ## widget = spinbox; range = 1 10 1
+
+NEW_ARC_AFTER 0
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS); widget = lineedit
+  # 
+
+NEW_ARC_GAP 0
+  ## activeif = EPHORB = ORBIT_DET(PSEUDO_OBS); widget = lineedit
+  # 
+
+SCREEN_OBS 1  "0"
+  ## widget = checkbox
+
+SCREEN_OBS_AFTER 1  "4"
+  ## activeif = SCREEN_OBS = 1; widget = lineedit; widget = spinbox
+  ## range = 2 10 1
+
+! Model for Orbit Determination
+! -----------------------------
+RSW_DYX 1  "ZYX"
+  ## widget = combobox; editable = false; cards = RSW ZYX
+
+R_D 1  "0"
+  ## activeif = SC_DIRRAD = 0; widget = checkbox
+
+S_Y 1  "0"
+  ## widget = checkbox
+
+W_X 1  "0"
+  ## widget = checkbox
+
+R_D_SINCOS 1  "0"
+  ## widget = checkbox
+
+S_Y_SINCOS 1  "0"
+  ## widget = checkbox
+
+W_X_SINCOS 1  "0"
+  ## widget = checkbox
+
+SC_DIRRAD 1  "1"
+  ## activeif = R_D = 0 AND RPR0 = 1; widget = checkbox
+
+SC_ALBEDO 1  "0"
+  ## widget = checkbox
+
+OFFSET_ESTIMATE 1  "0"
+  ## widget = checkbox
+
+NEW_OFFSET_GAP 0
+  ## widget = lineedit
+  # 
+
+ESTDRAG 1  "0"
+  ## widget = checkbox
+
+! Stochastic Part
+! ---------------
+STOPUL 1  "0"
+  ## widget = checkbox
+
+! File with Stochastic Pulses
+! ---------------------------
+STOCHP 1  "${CM}\SATORB\OUT\TEST.PLS"
+  ## widget = lineedit; path = PTH_SATORB_OUT; ext = NO_EXT; maxfiles = -1
+  # TEST.PLS
+
+STOCH_MAN 1  "0"
+  ## widget = checkbox
+
+GAP_STOCH_R 1  "30."
+  ## widget = lineedit; check_min = 0.1
+
+GAP_STOCH_S 1  "30."
+  ## widget = lineedit; check_min = 0.1
+
+GAP_STOCH_W 1  "30."
+  ## widget = lineedit; check_min = 0.1
+
+RMS_STOCH_R 1  "20."
+  ## widget = lineedit; check_min = 1.0
+
+RMS_STOCH_S 1  "20."
+  ## widget = lineedit; check_min = 1.0
+
+RMS_STOCH_W 1  "20."
+  ## widget = lineedit; check_min = 1.0
+
+! Geopotential Coefficients
+! -------------------------
+POT_EST 1  "0"
+  ## widget = checkbox
+
+POT_OUT 1  "${CM}\SATORB\OUT\GEOPOT.OUT"
+  ## widget = lineedit; path = PTH_SATORB_OUT; ext = NO_EXT; maxfiles = -1
+  # GEOPOT.OUT
+
+POT_LIM 1  "1"
+  ## widget = radiobutton; group = DUMMY
+
+POT_LIM_N 1  "2"
+  ## widget = spinbox; range = 0 70 1
+
+POT_LIM_M 1  "2"
+  ## widget = spinbox; range = 0 70 1
+
+POT_IND 1  "0"
+  ## widget = radiobutton; group = DUMMY
+
+POT_IND_NM 5
+  "3" "2"
+  "4" "2"
+  "5" "2"
+  "6" "2"
+  "7" "2"
+  ## widget = uniline
+
+
+# BEGIN_PANEL NO_CONDITION #####################################################
+#  SATORB 1: Primary Options and File Names                                    #
+#                                                                              #
+#  Program Options               > &&%%%%%%%%%%%%%%%%%%%% <                    # EPHORB
+#                                                                              #
+#  GENERAL INPUT:                                                              # 
+#  General Constants             > %%%%%%%%%%%% <                              # CONST
+#  Geodetic Datum                > %%%%%%%%%%%% <                              # DATUM
+#  General Pole File             > %%%%%%%%%%%% <                              # POLE
+#  Earth Gravity Field           > %%%%%%%%%%%% <                              # POTCOE
+#  Ocean Tides                   > %%%%%%%%%%%% <                              # OTIDES
+#  JPL Ephemerides               > %%%%%%%%%%%% <                              # JPLEPH
+#  Satellite Information File    > %%%%%%%%%%%% <                              # SATELL
+#                                                                              #
+#  OUTPUT:                                                                     #
+#  General Program Output        > %%%%%%%%%%%% <                              # SYSOUT
+#  Error Messages                > %%%%%%%%%%%% <                              # SYSERR
+#  File for Residuals            > %%%%%%%%%%%% <                              # RESIDU
+#  Standard Orbit File           > %%%%%%%%%%%% <        Create  > % <         # STDORB CREATE_STD
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(OBS) ##########################################
+# SATORB 2c: Input Files for Processing Astrometric Observations               #
+#                                                                              #
+#  Observation File              > %%%%%%%%%%%%%%% <                           # OBSFIL
+#  Station Coordinates (SAT)     > %%%%%%%%%%%%%%% <                           # COORD
+#  A Priori Elements             > %%%%%%%%%%%%%%% <                           # ELEAPR
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = EPHEMERIS ###############################################
+# SATORB 2a: Initial Osculating Elements                                       #
+#                                                                              #
+# Initial Epoch  > %%%% < > %% < > %%%%%%% < Int. Length (Days)  > %%%%%%% <   # YEAR MONTH DAY INT_LENGTH
+#                                                                              #
+# Use Revolution Period to define Semi-Major Axis                > % <         # USE_REV
+# Define Geogr. Longitude (else: R.A.) of Node                   > % <         # LONG_NODE
+#                                                                              #
+# Revolution Period      > %%%%%%%%%%% <  in sidereal days                     # REV_PER
+# Semi-major Axis        > %%%%%%%%%%% <  km                                   # SEMI_MAJOR
+# Eccentricity           > %%%%%%%%%%% <  ---                                  # ECCENTRICITY
+# Inclination            > %%%%%%%%%%% <  Degrees                              # INCLINATION
+# R.A. or Long. of Node  > %%%%%%%%%%% <  Degrees                              # NODE
+# Argument of Perigee    > %%%%%%%%%%% <  Degrees                              # PERIHELION
+# Perigee Passing Time   > %%%%%%%%%%% <  Seconds rel. to Initial Epoch        # PERIHELION_PASSING
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = EPHEMERIS ###############################################
+# SATORB 3a: Definition of Output Files                                        #
+#                                                                              #
+# Tabular Positions                                     > %%%%%%%%%%%% <       # TABPOS
+# Elements                                              > %%%%%%%%%%%% <       # ELEFIL
+#                                                                              #
+# Tabular Interval (Min)                                > %%%%%%%%%% <         # TAB_INT
+# Sampling for Tabular Positions                        > %%%%%%%%%% <         # SAMP_TAB
+# Number of Revolutions (Mean Elements, 0: Osc. Ele)    > %%%%% <              # NUMBER_REV
+#                                                                              #
+# Trafo Inertial to Earth-Fixed Correct or Approximate  > %%%%%%%%%%% <        # EOP_PA
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(PSEUDO_OBS) ###################################
+#  SATORB 2b: Selection of Input Data Sets                                     #
+#                                                                              #
+#  Satellite Type                                        > %%%%%%%%%%%% <      # SATTYP
+#  Use *.TAB-, *.SP3-, *.PPD-Files                       > %%%% <              # TABSP3
+#  RMS A Priori of Observations                          > %%%% < Meters       # RMS_APRIORI
+#                                                                              #
+#  PRN of Satellite(s) to be used (blank = all sats.)    > %%% <               # SATNUM
+#                                                                              #
+#  Auxiliary File                                        > %%%%%%%%%%%% <      # TABAUX
+#  Input Tabular Orbits (GPS/GLONASS)                    > %%%%%%%%%%%% <      # TABFIL
+#  Input Tabular Orbits (LEO)                            > %%%%%%%%%%%% <      # TABFILL
+#  Input Precise Orbits                                  > %%%%%%%%%%%% <      # PREFIL
+#  Input Pos. and Pos. Diff. File                        > %%%%%%%%%%%% <      # PPDFIL
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO AND TABSP3 = PPD #
+#  SATORB 3b: Output File Names and Processing Option (LEO)                    #
+#                                                                              #
+#  File for Position Difference Residuals        > %%%%%%%%%%%% <              # RESPPD
+#                                                                              #
+#  RMS-Ratio Position:Pos.-Difference            > %%%%%%% < : > %%%%%%% <     # RMS_RATIO_1 RMS_RATIO_2
+#                                                                              #
+#  For Ratio = 0:0 use values in file. In this case:                           #
+#                                                                              #
+#  Minimum RMS for Position                      > %%%%%%%% < Meters           # RMS_MIN_POS
+#  Minimum RMS for Position Difference           > %%%%%%%% < Meters           # RMS_MIN_PPD
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO ##################
+#  SATORB 3b(cont): Miscellaneous Output Files                                 #
+#                                                                              #
+#  Optional Output file types:                                                 # 
+#  Tabular File (Inertial)     > %%%%%%%%%%%% <         Create  > % <          # TABOUT  CREATE_TABOUT  
+#  Tabular File (Earth-fixed)  > %%%%%%%%%%%% <         Create  > % <          # EPHFILE CREATE_EPHFILE 
+#                                                                              #
+#  Standard Orbit (Output)                                                     #
+#  Order of Approximating Polynomial                     > %% <                # STD_ORDER
+#  Partial Interval Length                               > %%%%%%%% < Seconds  # STD_LENGTH
+#                                                                              # 
+#  Spacing between Epochs for Tabular and SP3-Files      > %%%% < Seconds      # SPAC_SP3_TAB 
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(OBS) AND CREATE_STD = 77 ######################
+#  SATORB 3c: Standard Orbit when Processing Astrometric Observations          #
+#                                                                              #
+#  Order of Approximating Polynomial                 > %% <                    # STD_ORDER_IEO3
+#  Sub-Interval Length                         > %%%%%%%% < Seconds            # STD_LENGTH_IEO3
+#  Interval Length (Minimum=Max-Min Obs.time)  > %%%%%%%% < Hours              # STD_LENGTH_TOT
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL  NO CONDITION  ###################################################
+#  SATORB 4: A Priori Force Field                                              #
+#                                                                              #
+#  Earth Potential, Upper Limits:         Degree n > %%% <   Order m > %%% <   # UPPER_N UPPER_M
+#                                                                              #
+#  Gravitational Attraction from Sun               > % <                       # SUNGRAV
+#  Gravitational Attraction from Moon              > % <                       # MOONGRAV
+#  Earth Tides                                     > % <                       # TIDES
+#  Corrections due to General Relativity           > % <                       # GENREL
+#                                                                              #
+#  Direct Radiation Pressure (Simple Model)        > % <                       # RPR0
+#  Rock IV A Priori Model (GPS/Glonass)            > % <                       # ROCKIV
+#  Air Drag using MSIS-E Model (LEO)               > % <                       # AIRDRAG
+#  Albedo (LEO)                                    > % <                       # ALBEDO
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL RPR0 = 1 OR AIRDRAG = 1 ##########################################
+#  SATORB 4(cont): A Priori Force Field                                        #
+#                                                                              #
+#  DIRECT RADIATION PRESSURE SPECIFICATION                                     #
+#  Area/Mass Ratio (Q/m)             > %%%%% <                                 # RPR_AM_RATIO
+#  Coefficient C                     > %%% <                                   # RPR_COEFF_C
+#                                                                              #
+#  ATMOSPHERIC DRAG SPECIFICATION                                              #
+#  Area/Mass Ratio (Q/m)             > %%%%% <                                 # DRAG_AM_RATIO
+#  Coefficient C for Drag            > %%% <                                   # DRAG_COEFF_C
+#  Daily Solar Flux at 10.7 cm       > %%%% <                                  # DRAG_SOLAR
+#  Planetary Magnetic Index Ap       > %% <                                    # DRAG_MAG
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL NO CONDITION  ####################################################
+#  SATORB 5: Specification of Integration                                      #
+#                                                                              #
+#  (A) Primary Equations                                                       #
+#  Integration Order                         > %% <                            # INTEGRATION_ORDER
+#  Initial Step Size                         > %%%%%%% <  Seconds              # INITIAL_STEP
+#  Number of Iterations per Step             > % <                             # ITER_STEP
+#  Max. Error per Velocity Component         > %%%%%%% <  Meters/Second        # MAXVEL
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB /= EPHEMERIS  #############################################
+#  SATORB 6: Specification of Integration (Variational Eqns.)                  #
+#                                                                              #
+#  (B) Variational Equations                                                   #
+#  Integration Order                           > %% <                          # INTEGRATION_ORDER_VAR
+#  Fixed Step Size                             > %%%% <   Hours                # STEP_VAR
+#                                                                              #
+#  SATELLITE ORBIT DETERMINATION: SPECIFICATION OF ITERATION PROCESS           #
+#  Number of Iterations of Orbit Improvement   > % <                           # NUM_ITER_ODET
+#  New Arc after                               > %%%% <  Minutes               # NEW_ARC_AFTER
+#  New Arc after Data Gap of                   > %%%% <  Minutes               # NEW_ARC_GAP
+#                                                                              #
+#  Screen Observations using 3*RMS-Criterion   > % <                           # SCREEN_OBS
+#  Screen Observations after                   > % < Iteration Steps           # SCREEN_OBS_AFTER
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO AND BOOK_BERNESE = 0 ##################
+#  SATELLITE ORBIT DETERMINATION - Special Options for LEOs                    #
+#                                                                              #
+#  Estime Offset (dx,dy,dz) for contiguous observations       > % <            # OFFSET_ESTIMATE
+#  Maximum Gap between contiguous observations              > %%% <  sec       # NEW_OFFSET_GAP
+#                                                                              #
+#                                                                              #
+#  Estimate airdrag scaling factor                            > % <            # ESTDRAG
+#  Estimate albedo                                            > % <            # SC_ALBEDO
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB /= EPHEMERIS ##############################################
+#  SATORB 7: Model for Orbit Determination - Deterministic Part                #
+#                                                                              #
+#  Use (R,S,W)- or (Z,Y,X)-Decomposition                  > %%%% <             # RSW_DYX
+#  Estimate R- resp. Z-Bias                               > % <                # R_D
+#  Estimate S- resp. Y-Bias                               > % <                # S_Y
+#  Estimate W- resp. X-Bias                               > % <                # W_X
+#  Estimate R- resp. Z- Once-per-revolution Terms         > % <                # R_D_SINCOS
+#  Estimate S- resp. Y- Once-per-revolution Terms         > % <                # S_Y_SINCOS
+#  Estimate W- resp. X- Once-per-revolution Terms         > % <                # W_X_SINCOS
+#                                                                              #
+#  Estimate Scaling Factor for Direct Radiation Pressure  > % <                # SC_DIRRAD
+#  (only if simple model of DRP is 'ON')                                       # 
+#                                                                              #
+#  MODEL FOR ORBIT DETERMINATION - Stochastic Part                             #
+#  Setting up Stochastic Pulses                           > % <                # STOPUL
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL  EPHORB /= EPHEMERIS AND STOPUL = 1   ############################
+#  SATORB 8: Model for Orbit Determination - Stochastic Part                   #
+#                                                                              #
+#  Output File for Stochastic Pulses           > %%%%%%%%%%%% <                # STOCHP
+#                                                                              #
+#  Gap between Stochastic Pulses in R          > %%%%% <    Minutes            # GAP_STOCH_R
+#  Gap between Stochastic Pulses in S          > %%%%% <    Minutes            # GAP_STOCH_S
+#  Gap between Stochastic Pulses in W          > %%%%% <    Minutes            # GAP_STOCH_W
+#                                                                              #
+#  RMS of Velocity Change in R                 > %%%%%%% <  mm/sec             # RMS_STOCH_R
+#  RMS of Velocity Change in S                 > %%%%%%% <  mm/sec             # RMS_STOCH_S
+#  RMS of Velocity Change in W                 > %%%%%%% <  mm/sec             # RMS_STOCH_W
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB = ORBIT_DET(PSEUDO_OBS) AND SATTYP = LEO AND BOOK_BERNESE = 0 ##################
+#  LEO ORBIT DETERMINATION: MISCELLANEOUS SETTINGS                             #
+#  Optional Output file types:                                                 # 
+#  Attitude, Accelerations and Manoeuvres Files          > %%%%%%%%%%%% <      # MISCFIL
+#                                                                              # 
+#  Introduce Stochastic Pulses according to manoeuvers    > % <                # STOCH_MAN
+#                                                                              #
+#  MODEL FOR ORBIT DETERMINATION - Miscellaneous Part                          #
+#  Set up Geopotential Coefficients                       > % <                # POT_EST
+#  SATELLITE ORBIT DETERMINATION: A PRIORI FORCE FIELD                         #
+#                                                                              #
+#  For LEOs                                                                    #
+#  Get non-gravity accelerations from external file    > % <                   # NGR_ACC
+#  Estimate offsets of the acceleration data           > % <                   # OFF_ACC
+#  Estimate scaling factor for the acc data            > % <                   # SCL_ACC
+#                                                                              #
+# END_PANEL ####################################################################
+
+
+# BEGIN_PANEL EPHORB /= ORBIT_DET(PSEUDO_OBS) AND POT_EST = 1 ANB BOOK_BERNESE = 0  ################
+#  MODEL FOR ORBIT DETERMINATION - Estimation of Geopotential Coefficients     #
+#                                                                              #
+#  Output File for Geopotential Coefficients           > %%%%%%%%%%%% <        # POT_OUT
+#                                                                              #
+#  > % < Specify Upper Limits for Degree and Order                             # POT_LIM
+#                                                                              #
+#            Degree n  > % <   Order m  > % <                                  # POT_LIM_N POT_LIM_M
+#                                                                              #
+#  > % < Specify Individual Coefficients                                       # POT_IND
+#                                                                              #
+#             Degree n       Order m                                           #
+#          >     %%             %%     <                                       # POT_IND_NM
+#                                                                              #
+# END_PANEL ####################################################################
