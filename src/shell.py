@@ -8,11 +8,10 @@ def  path_to(main_path, *args):
 
 def  command_init(name):
     """Function for input command processing"""
-    if name == 'help':
-        print('Hello and welcome to automatisation of Celestial Mechanics programm!')
-        print()
+    if name == 'info':
+        print('\nHello and welcome to automatisation of Celestial Mechanics programm!\n')
         print('You can use this comands in shell:')
-        print('help - if you need to read help information')
+        print('info - if you need to read help information')
         print('GPS_load - if you need to download a GPS ephemeris')
         print('GLO_load - if you need to download a GLONASS ephemeris')
         print('BULL_load - if you need to update your BULLET_A.erp file')
@@ -22,26 +21,27 @@ def  command_init(name):
         print('anINCL - if you need to get inclanation from *.OUT file')
         print('anNODE - if you need to get r.a.node from *.OUT file')
         print('anPER - if you need to get a.o.perigee from *.OUT file')
-        print('exit - if you want to quit')
-        print()
-    if name == 'GPS_load':
+        print('exit - if you want to quit\n')
+    elif name == 'GPS_load':
         import gps_eph_dwld
-    if name == 'GLO_load':
+    elif name == 'GLO_load':
         import glo_eph_dwld
-    if name == 'BULL_load':
+    elif name == 'BULL_load':
         import earth_param_dwld
-    if name == 'SATORB':
+    elif name == 'SATORB':
         import satorb_aut
-    if name == 'anMAXIS':
+    elif name == 'anMAXIS':
         import max_anlz
-    if name == 'anNODE':
+    elif name == 'anNODE':
         import node_anlz
-    if name == 'anINCL':
+    elif name == 'anINCL':
         import incl_anlz
-    if name == 'anPER':
+    elif name == 'anPER':
         import prg_anlz
-    if name == 'anECC':
+    elif name == 'anECC':
         import ecc_anlz
+    else:
+        print('Wrong command string. Type \"info\" for help')
     return 0
  
 
@@ -49,7 +49,7 @@ main_path = (str(os.path.realpath(os.path.dirname(sys.argv[0]))))
 print('Adding directory to sys path:')
 path_to(main_path, 'src/deph', 'src/anlz', 'src/satorb')
 
-command = 'help'   
+command = 'info'   
 
 while command != 'exit':
     command_init(command)
