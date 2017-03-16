@@ -1,59 +1,39 @@
 import sys, os
 
-def  path_to(main_path, *args):
-    for name in args:
-        sys.path.append(main_path + '/' + name)
-        print(main_path + '/' + name)
-    return 0
-
-def  command_init(name):
-    """Function for input command processing"""
-    if name == 'info':
-        print('\nHello and welcome to automatisation of Celestial Mechanics programm!\n')
-        print('You can use this comands in shell:')
-        print('info - if you need to read help information')
-        print('GPS_load - if you need to download a GPS ephemeris')
-        print('GLO_load - if you need to download a GLONASS ephemeris')
-        print('BULL_load - if you need to update your BULLET_A.erp file')
-        print('SATORB - computation with SATORB utility')
-        print('anMAXIS - if you need to get major axis from *.OUT file')
-        print('anECC - if you need to get eccentricity from *.OUT file')
-        print('anINCL - if you need to get inclanation from *.OUT file')
-        print('anNODE - if you need to get r.a.node from *.OUT file')
-        print('anPER - if you need to get a.o.perigee from *.OUT file')
-        print('exit - if you want to quit\n')
-    elif name == 'GPS_load':
-        import gps_eph_dwld
-    elif name == 'GLO_load':
-        import glo_eph_dwld
-    elif name == 'BULL_load':
-        import earth_param_dwld
-    elif name == 'SATORB':
-        import satorb_aut
-    elif name == 'anMAXIS':
-        import max_anlz
-    elif name == 'anNODE':
-        import node_anlz
-    elif name == 'anINCL':
-        import incl_anlz
-    elif name == 'anPER':
-        import prg_anlz
-    elif name == 'anECC':
-        import ecc_anlz
+def command_validation(command, arg_num):
+    """Command validation function"""
+    if command == 'config' and arg_num != 5:
+        print('Command argument error')
+        print('You entered', arg_num, 'arguments. Expected 4')
+        return False
     else:
-        print('Wrong command string. Type \"info\" for help')
-    return 0
- 
+        return True
 
-main_path = (str(os.path.realpath(os.path.dirname(sys.argv[0]))))
-print('Adding directory to sys path:')
-path_to(main_path, 'src/deph', 'src/anlz', 'src/satorb')
+def config_gs(*command):
+    import eth_cfg_loader
+    if command_validation(command[0][0], len(command[0])):
+        param = command[0][1]
+        method = command[0][2]
+        stage = command[0][3]
+        key = command[0][4]
+        print(eth_cfg_loader.get_inf(param, stage, key))
+        return True
+    else:
+        return False
 
-command = 'info'   
+command = ['']
 
-while command != 'exit':
-    command_init(command)
-    command = input()
+while command[0] != 'exit':
+    """
+    prefix| type   |  method | key | value
+    ______|________|_________|_____|______
+    config|etherius| get     |stage| key
+          |glonass | set     |  
+          |gps     |
+    """
+    command = input().split(' ')
+    if command[0] == 'config':
+        config_gs(command)
 else:
     print('Thank you for using this programm!')
     input('Press Enter to quit')
