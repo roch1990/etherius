@@ -90,8 +90,10 @@ def load(command):
         cfg_request.pop()
     param.append(idate)
     param.append(edate)
+    print(param)
     import ftp_dwld
-    ftp_dwld.ftp_worker(path  = param[1],
+    ftp_dwld.ftp_worker(data_format = param[0],
+                        path  = param[1],
                         idate = param[2],
                         edate = param[3],
                         )
