@@ -1,6 +1,9 @@
 '''
 Module for application configuration
 Module represented this logic:
+summary input:
+    input: param(etherius, glonass, gps), stage(config type), data_key(key)
+    output: value
 get_inf -> validations -(if ok) -> get_config_data
 get_inf:
     input  = param, stage, key (string)
@@ -18,6 +21,7 @@ inp_validation:
     input: param (string), stage_validation, key_validation (bool)
     output: summary of key and stage validation (bool)
 '''
+import datetime
 
 def get_config_data(param, stage, key):
     # import module for *.cfg file parsing
@@ -35,19 +39,21 @@ def get_config_data(param, stage, key):
        return eth_config.get(str(stage), str(key))
     except NameError as e:
         print(e)
-        return -1    
+        return False
 
 def stage_validation(param, stage):
     if param == 'eth':
         stage_range = ['data_path', 'eph_type', 'bull_type',
                      'frc_type', 'stat_param', 'data_type']
-    elif param == ('glo' or 'gps'):
+    elif param in ['glo', 'gps']:
         stage_range = ['init_date', 'endp_date']
     else:
+        print('{0}\tKey validation error:\t{1}'.format(datetime.datetime.now(), param))
         return False
     if stage in stage_range:
         return True
     else:
+        print('{0}\tKey validation error:\t{1}'.format(datetime.datetime.now(), param))
         return False
     
 def key_validation(param, key):
@@ -59,40 +65,48 @@ def key_validation(param, key):
                      'const', 'stark',
                      'gps_alma', 'glo_alma', 'gps_stat', 'glo_stat', 'sat_hlth',
                      'glo_rinx', 'gps_rinx', 'sat_ephm', 'sat_clck', 'sat_bull']
-    elif param == ('glo' or 'gps'):
-        key_range = ['year', 'month', 'day']
+    elif param in ['glo', 'gps']:
+        key_range = ['year', 'month', 'day', 'hour']
     else:
+        print('{0}\tKey validation error:\t{1}'.format(datetime.datetime.now(), param))
         return False
     if key in key_range:
         return True
     else:
+        print('{0}\tKey validation error:\t{1}'.format(datetime.datetime.now(), param))
         return False
 
 def inp_validations(param, stage, key):
     #summary result of validations
     return stage_validation(param, stage) & key_validation(param, key)
 
-def get_inf(param, stage, command):
-    # converting command to small param
+def param_convert(param):
     if param == 'glonass':
         param = 'glo'
     elif param == 'gps':
         param = 'gps'
     elif param == 'etherius':
         param = 'eth'
-    # converting command to small param
-    if command == 'almanac':
-        command = 'alma'
-    elif command == 'status':
-        command = 'stat'
-    elif command == 'brdc':
-        command = 'brdc'
-    elif command == 'products':
-        command = 'prod'
-    elif command == 'bulletin':
-        command = 'bull'
-    elif command == 'format':
-        command = 'form'
+    elif param == 'almanac':
+        param = 'alma'
+    elif param == 'status':
+        param = 'stat'
+    elif param == 'brdc':
+        param = 'brdc'
+    elif param == 'products':
+        param = 'prod'
+    elif param == 'bulletin':
+        param = 'bull'
+    elif param == 'format':
+        param = 'form'
+    return param
+    
+
+def get_inf(param, stage, command):
+    """Return data from config file"""
+    # converting command to samll param
+    param = param_convert(param)
+    command = param_convert(command)
     #validations    
     if inp_validations(param, stage, command):
         #result 
