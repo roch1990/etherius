@@ -1,7 +1,10 @@
-import os
-import sys
-import datetime
-import subprocess
+try:
+    import os
+    import sys
+    import datetime
+    import subprocess
+except ImportError as e:
+    raise e
 
 
 def help_inf():
@@ -18,8 +21,8 @@ def help_inf():
 
 def path_to(main_path, *args):
     for name in args:
-        sys.path.append(main_path + '/' + name)
-        # print(main_path + '/' + name)
+        sys.path.append(os.path.join(name))
+        # print()
     return 0
 
 __version__ = '0.1'
@@ -43,5 +46,8 @@ path_to(main_path,
 
 if os_name == 'linux':
      subprocess.call(['bash', 'sh/module_import.sh'])
-
-import shell
+try:
+    import shell
+except ImportError as e:
+    print('{0}\tCannot loading main module.'.format(datemite.datetime.now()))
+    raise e

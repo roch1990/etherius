@@ -1,6 +1,6 @@
 try:
     import shell
-except Exception as e:
+except ImportError as e:
     raise e
 
 
